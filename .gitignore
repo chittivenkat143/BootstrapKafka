@@ -4,9 +4,13 @@
 *.class
 
 ### Gradle ###
+*iml
 .gradle
 /build/
 
+.idea
+.idea/workspace.xml
+/producers/build/
 # Ignore Gradle GUI config
 gradle-app.setting
 
