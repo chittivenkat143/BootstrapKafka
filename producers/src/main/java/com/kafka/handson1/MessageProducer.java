@@ -1,9 +1,6 @@
 package com.kafka.handson1;
 
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.ProducerConfig;
-import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.clients.producer.RecordMetadata;
+import org.apache.kafka.clients.producer.*;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +28,22 @@ public class MessageProducer {
         return properties;
     }
 
+    public void publishMessagesAsync(String key, String val){
+        ProducerRecord<String, String> producerRecord = new ProducerRecord<>(topicName, key, val);
+        kafkaProducer.send(producerRecord, getCallback(key, val));
+    }
+
+    private Callback getCallback(String key, String val) {
+        return (metadata, exception) -> {
+            if (exception != null) {
+                logger.error("Exception in publishMessageSync: {}", exception.getMessage());
+            } else {
+                logger.info("Message {} sent successfully for the key {}", val, key);
+                logger.info("Published Message Offset is {} and the Partition is {}", metadata.partition(), metadata.offset());
+            }
+        };
+    }
+
     public void publishMessageSync(String key, String val) {
         ProducerRecord<String, String> producerRecord = new ProducerRecord<>(topicName, key, val);
         RecordMetadata recordMetadata = null;
@@ -47,6 +60,13 @@ public class MessageProducer {
 
     public static void main(String[] args) {
         MessageProducer messageProducer = new MessageProducer(kafkaProducerProperties());
-        messageProducer.publishMessageSync(null, "NewValues");
+        //messageProducer.publishMessageSync(null, "NewValues");
+        messageProducer.publishMessagesAsync(null, "NewAsyncValues");
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            logger.error("Exception in Main: {}", e.getMessage());
+        }
     }
 }
