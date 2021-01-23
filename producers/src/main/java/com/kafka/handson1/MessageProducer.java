@@ -60,13 +60,14 @@ public class MessageProducer {
 
     public static void main(String[] args) {
         MessageProducer messageProducer = new MessageProducer(kafkaProducerProperties());
-        //messageProducer.publishMessageSync(null, "NewValues");
-        messageProducer.publishMessagesAsync(null, "NewAsyncValues");
+        messageProducer.publishMessageSync("B", "NewValues1");
+        messageProducer.publishMessageSync("A", "NewValues2");
+        /*messageProducer.publishMessagesAsync(null, "NewAsyncValues");
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
             logger.error("Exception in Main: {}", e.getMessage());
-        }
+        }*/
     }
 }
