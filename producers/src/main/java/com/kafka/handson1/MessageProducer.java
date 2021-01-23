@@ -13,7 +13,8 @@ public class MessageProducer {
 
     private static final Logger logger = LoggerFactory.getLogger(MessageProducer.class);
 
-    String topicName = "users";
+    //String topicName = "users";
+    String topicName = "users-replicated";
     KafkaProducer<String, String> kafkaProducer;
 
     public MessageProducer(Map<String, Object> properties) {
@@ -25,7 +26,12 @@ public class MessageProducer {
         properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9090, localhost:9091, localhost:9092");
         properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        properties.put(ProducerConfig.ACKS_CONFIG, "all");
         return properties;
+    }
+
+    public void close(){
+        kafkaProducer.close();
     }
 
     public void publishMessagesAsync(String key, String val){
