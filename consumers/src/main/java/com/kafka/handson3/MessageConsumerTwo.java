@@ -31,6 +31,7 @@ public class MessageConsumerTwo {
         properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         properties.put(ConsumerConfig.GROUP_ID_CONFIG, "group_users_two");
         properties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+        properties.put(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG, "5000");//5sec
         return properties;
     }
 
@@ -39,6 +40,7 @@ public class MessageConsumerTwo {
         try {
             while (true) {
                 ConsumerRecords<String, String> consumerRecords = kafkaConsumer.poll(Duration.of(100, ChronoUnit.MILLIS));
+                Thread.sleep(6000);//6sec
                 consumerRecords.forEach((cRecords) -> {
                     logger.info("Consumer RecordKey: {}, RecordValue: {}, & RecordPartition: {}", cRecords.key(), cRecords.value(), cRecords.partition());
                 });
