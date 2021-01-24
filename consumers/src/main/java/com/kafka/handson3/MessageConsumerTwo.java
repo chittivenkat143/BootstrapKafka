@@ -13,14 +13,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MessageConsumer {
+public class MessageConsumerTwo {
 
-    private static final Logger logger = LoggerFactory.getLogger(MessageConsumer.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(MessageConsumerTwo.class.getName());
 
     private KafkaConsumer<String, String> kafkaConsumer;
     private String strTopic = "users-replicated";
 
-    public MessageConsumer(Map<String, Object> prop) {
+    public MessageConsumerTwo(Map<String, Object> prop) {
         kafkaConsumer = new KafkaConsumer<String, String>(prop);
     }
 
@@ -52,7 +52,7 @@ public class MessageConsumer {
     }
 
     public static void main(String[] args) {
-        MessageConsumer consumer = new MessageConsumer(consumerProperties());
+        MessageConsumerTwo consumer = new MessageConsumerTwo(consumerProperties());
         consumer.consumeMessages();
     }
 
