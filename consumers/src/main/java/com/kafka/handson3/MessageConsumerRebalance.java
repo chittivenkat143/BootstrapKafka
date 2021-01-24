@@ -25,6 +25,8 @@ public class MessageConsumerRebalance implements ConsumerRebalanceListener {
     @Override
     public void onPartitionsAssigned(Collection<TopicPartition> partitions) {
         logger.info("onPartitionsAssigned: {}", partitions);
+        //kafkaConsumer.seekToBeginning(partitions);//This will read all records from starting on every brought Up [Will use this Kafka DataStore]
+        kafkaConsumer.seekToEnd(partitions);//This will read new records on every brought Up & ignores old records
     }
 
     @Override
