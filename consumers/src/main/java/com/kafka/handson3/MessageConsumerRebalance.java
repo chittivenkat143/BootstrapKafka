@@ -33,4 +33,5 @@ public class MessageConsumerRebalance implements ConsumerRebalanceListener {
     public void onPartitionsLost(Collection<TopicPartition> partitions) {
         logger.info("onPartitionsLost: {}", partitions);
     }
+
 }

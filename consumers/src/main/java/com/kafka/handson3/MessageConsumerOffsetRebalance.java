@@ -41,11 +41,11 @@ public class MessageConsumerOffsetRebalance {
     public void consumeMessages(){
         kafkaConsumer.subscribe(List.of(strTopic), new MessageConsumerRebalance(kafkaConsumer));
         try {
-            while (true) {
+            while (true) { /*Consumer Poll Loop*/
                 ConsumerRecords<String, String> consumerRecords = kafkaConsumer.poll(Duration.of(100, ChronoUnit.MILLIS));
                 consumerRecords.forEach((cRecords) -> {
                     logger.info("Consumer RecordKey: {}, RecordValue: {}, & RecordPartition: {}", cRecords.key(), cRecords.value(), cRecords.partition());
-                    offsetAndMetadataMap.put(new TopicPartition(cRecords.topic(), cRecords.partition()), new OffsetAndMetadata(cRecords.offset()));
+                    offsetAndMetadataMap.put(new TopicPartition(cRecords.topic(), cRecords.partition()), new OffsetAndMetadata(cRecords.offset()+1,null));
                 });
 
                 if(consumerRecords.count() > 0){
